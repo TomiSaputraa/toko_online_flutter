@@ -14,10 +14,11 @@ class ProductDetail extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: Icon(CupertinoIcons.back)),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Icon(CupertinoIcons.back),
+        ),
         centerTitle: true,
         title: Text("Product Detail"),
       ),
