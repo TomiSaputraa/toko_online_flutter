@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:toko_online/datas/repository/product_repository.dart';
+import 'package:toko_online/screens/add_product.dart';
 import 'package:toko_online/screens/product_detail.dart';
 
 class HomePage extends StatefulWidget {
@@ -19,7 +20,6 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     Future.delayed(Duration(seconds: 3), () {
-      // <-- Delay here
       setState(() {
         _isLoading = false; // <-- Code run after delay
       });
@@ -29,9 +29,20 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (_) => AddProduct()));
+        },
+        child: Icon(Icons.add),
+        splashColor: Colors.amber,
+        tooltip: "Tambah produk",
+        heroTag: null,
+      ),
       appBar: AppBar(
         centerTitle: true,
         title: Text("Rollo Store"),
+        automaticallyImplyLeading: false,
       ),
       body: FutureBuilder(
         future: repository.getProduct(),
@@ -70,10 +81,8 @@ class _HomePageState extends State<HomePage> {
                               },
                               child: Hero(
                                 tag: snapshot.data[index]['image_url'],
-                                child: Image(
-                                  image: NetworkImage(
-                                      snapshot.data[index]['image_url']),
-                                ),
+                                child: Image.network(
+                                    snapshot.data[index]['image_url']),
                               ),
                             ),
                           ),

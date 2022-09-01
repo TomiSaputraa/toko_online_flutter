@@ -1,94 +1,103 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:toko_online/screens/homepage.dart';
-import 'package:http/http.dart' as http;
+import 'package:toko_online/datas/model/product_model.dart';
+import 'package:toko_online/datas/repository/product_repository.dart';
 
 class AddProduct extends StatelessWidget {
-  final _formKey = GlobalKey<FormState>();
-  TextEditingController _nameController = TextEditingController();
-  TextEditingController _descriptionController = TextEditingController();
-  TextEditingController _priceController = TextEditingController();
-  TextEditingController _imageController = TextEditingController();
-
-  Future saveProduct() async {
-    final response =
-        await http.post(Uri.parse("http://10.0.2.2:8000/api/products"), body: {
-      "name": _nameController.text,
-      "description": _descriptionController.text,
-      "price": _priceController.text,
-      "image_url": _imageController.text,
-    });
-    return json.decode(response.body);
-  }
+  const AddProduct({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final Repository repository = Repository();
+
+    // GlobalKey dapat dimanfaatkan untuk menyimpan state dari suatu widget agar saat
+    // elemen tersebut dipindahkan ke suatu lokasi di widget tree, state miliknya tidak hilang.
+    final _addFormKey = GlobalKey<FormState>();
+    TextEditingController _nameController = TextEditingController();
+    TextEditingController _descriptionController = TextEditingController();
+    TextEditingController _priceController = TextEditingController();
+    TextEditingController _imageUrlController = TextEditingController();
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Add Product"),
+        centerTitle: true,
       ),
-      body: Form(
-        key: _formKey,
-        child: SingleChildScrollView(
+      body: SingleChildScrollView(
+        child: Form(
+          key: _addFormKey,
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               TextFormField(
+                decoration: InputDecoration(
+                  label: Text("Name"),
+                ),
                 controller: _nameController,
-                decoration: InputDecoration(labelText: "Name"),
                 validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "Insert name product";
+                  if (value!.isEmpty) {
+                    return 'Masukan Nama product';
                   }
                   return null;
                 },
+                onChanged: (_) {},
               ),
               TextFormField(
+                decoration: InputDecoration(
+                  label: Text("Description"),
+                ),
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Masukan Deskripsi product';
+                  }
+                  return null;
+                },
+                onChanged: (_) {},
                 controller: _descriptionController,
-                decoration: InputDecoration(labelText: "Description"),
+              ),
+              TextFormField(
+                decoration: InputDecoration(
+                  label: Text("Price"),
+                ),
                 validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "Insert description product";
+                  if (value!.isEmpty) {
+                    return 'Masukan Harga product';
                   }
                   return null;
                 },
-              ),
-              TextFormField(
+                onChanged: (_) {},
                 controller: _priceController,
-                decoration: InputDecoration(labelText: "Price"),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "Insert price product";
-                  }
-                  return null;
-                },
               ),
               TextFormField(
-                controller: _imageController,
-                decoration: InputDecoration(labelText: "Image"),
+                decoration: InputDecoration(
+                  label: Text("Image Url"),
+                ),
                 validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "Insert image url product";
+                  if (value!.isEmpty) {
+                    return 'Masukan Gambar product';
                   }
                   return null;
                 },
-              ),
-              SizedBox(
-                height: 10,
+                onChanged: (_) {},
+                controller: _imageUrlController,
               ),
               ElevatedButton(
                 onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    saveProduct().then(
-                      (value) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => HomePage(),
-                          ),
-                        );
-                      },
+                  // fungsi untuk validasi jika semua form telah diisi
+                  // sesuai dengan validator(jika return true dan tidak error)
+                  if (_addFormKey.currentState!.validate()) {
+                    _addFormKey.currentState!.save();
+                    repository.postProduct(
+                      ProductElement(
+                          name: _nameController.text,
+                          description: _descriptionController.text,
+                          price: _priceController.text,
+                          imageUrl: _imageUrlController.text),
                     );
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text('Succes add Data'),
+                      backgroundColor: Colors.amber,
+                    ));
+                    Navigator.pop(context);
                   }
                 },
                 child: Text("Save"),
