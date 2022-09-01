@@ -28,7 +28,7 @@ class Repository {
     Product? product,
   ) async {
     // Sebelumnya saya error disini karena tidak mendefinisikan
-    // tipe data dari value yang akan di gunakan
+    // tipe data dari value yang akan di gunakan contoh : <String, String>{}
     Map data = <String, String>{
       'name': product!.name,
       'description': product.description,
