@@ -28,9 +28,9 @@ class ProductDetail extends StatelessWidget {
             width: double.infinity,
             height: MediaQuery.of(context).size.height / 2,
             child: Hero(
-              tag: product["image_url"],
+              tag: product["imageUrl"],
               child: Image(
-                image: NetworkImage(product["image_url"]),
+                image: NetworkImage(product["imageUrl"]),
               ),
             ),
           ),

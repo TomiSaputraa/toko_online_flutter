@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:toko_online/datas/model/product_model.dart';
+import 'package:toko_online/datas/model/product.dart';
 import 'package:toko_online/datas/repository/product_repository.dart';
 
 class AddProduct extends StatelessWidget {
@@ -87,11 +87,12 @@ class AddProduct extends StatelessWidget {
                   if (_addFormKey.currentState!.validate()) {
                     _addFormKey.currentState!.save();
                     repository.postProduct(
-                      ProductElement(
-                          name: _nameController.text,
-                          description: _descriptionController.text,
-                          price: _priceController.text,
-                          imageUrl: _imageUrlController.text),
+                      Product(
+                        name: _nameController.text,
+                        description: _descriptionController.text,
+                        price: _priceController,
+                        imageUrl: _imageUrlController,
+                      ),
                     );
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                       content: Text('Succes add Data'),

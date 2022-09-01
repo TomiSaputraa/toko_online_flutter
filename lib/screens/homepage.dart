@@ -80,9 +80,9 @@ class _HomePageState extends State<HomePage> {
                                 }));
                               },
                               child: Hero(
-                                tag: snapshot.data[index]['image_url'],
+                                tag: snapshot.data[index]['imageUrl'],
                                 child: Image.network(
-                                    snapshot.data[index]['image_url']),
+                                    snapshot.data[index]['imageUrl']),
                               ),
                             ),
                           ),
