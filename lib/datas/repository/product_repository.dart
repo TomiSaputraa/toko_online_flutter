@@ -23,6 +23,7 @@ class Repository {
 
   // Method ini akan membuat product sesuai dengan nama class
   // disini jangan lupa nama class sesuai dengan data yang ingin kita CRUD
+  // future harus mereturn type nullable
   Future<Product?> postProduct(
     Product? product,
   ) async {

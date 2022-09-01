@@ -4,6 +4,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'product.g.dart';
 
+//tambahkan explicitToJson: true agar dapat dijelaskan ke dalam json
 @JsonSerializable(explicitToJson: true)
 class Data {
   Data({
@@ -32,10 +33,15 @@ class Product {
     required this.description,
     required this.price,
     required this.imageUrl,
+    // untuk key backend yang berbeda dengan properti class contoh : created_at(key di api/backend)
+    // bisa menggunakan cara => @JsonKey(name: 'created_at') yang akan membuat key spesifik dengan database
+    // @JsonKey(name: 'created_at')
     this.createdAt,
     this.updatedAt,
   });
 
+  // buat tipe data nullable untuk properti yang akan diisi otomatis oleh backend
+  // jadi kita bisa mengisi value yang penting saja di view widget
   final int? id;
   final String name;
   final String description;
