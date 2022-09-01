@@ -88,11 +88,10 @@ class AddProduct extends StatelessWidget {
                     _addFormKey.currentState!.save();
                     repository.postProduct(
                       Product(
-                        name: _nameController.text,
-                        description: _descriptionController.text,
-                        price: _priceController,
-                        imageUrl: _imageUrlController,
-                      ),
+                          name: _nameController.text,
+                          description: _descriptionController.text,
+                          price: _priceController.text,
+                          imageUrl: _imageUrlController.text),
                     );
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                       content: Text('Succes add Data'),

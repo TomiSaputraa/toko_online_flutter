@@ -23,27 +23,25 @@ class Repository {
 
   // Method ini akan membuat product sesuai dengan nama class
   // disini jangan lupa nama class sesuai dengan data yang ingin kita CRUD
-  Future<Product> postProduct(
-    String name,
-    String description,
-    String price,
-    String imageUrl,
+  Future<Product?> postProduct(
+    Product? product,
   ) async {
     // Sebelumnya saya error disini karena tidak mendefinisikan
     // tipe data dari value yang akan di gunakan
+    Map data = <String, String>{
+      'name': product!.name,
+      'description': product.description,
+      'price': product.price,
+      'imageUrl': product.imageUrl,
+    };
 
     var response = await post(
       Uri.parse(apiUrl),
-      headers: {
+      headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Charset': 'utf-8',
       },
-      body: json.encode({
-        'name': name,
-        'description': description,
-        'price': price,
-        'imageUrl': imageUrl,
-      }),
+      body: json.encode(data),
     );
     if (response.statusCode == 200) {
       return Product.fromJson(json.decode(response.body));
