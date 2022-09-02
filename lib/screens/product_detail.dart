@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:toko_online/screens/edit_product_page.dart';
 
 class ProductDetail extends StatelessWidget {
   const ProductDetail({
@@ -46,7 +47,21 @@ class ProductDetail extends StatelessWidget {
                   fontSize: 18,
                 ),
               ),
-              Row(children: [Icon(Icons.edit), Icon(Icons.delete)])
+              Row(children: [
+                GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => EditProduct(
+                            product: product,
+                          ),
+                        ),
+                      );
+                    },
+                    child: Icon(Icons.edit)),
+                Icon(Icons.delete)
+              ])
             ],
           ),
           Text(product["description"])

@@ -93,11 +93,13 @@ class AddProduct extends StatelessWidget {
                           price: _priceController.text,
                           imageUrl: _imageUrlController.text),
                     );
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      content: Text('Succes add Data'),
-                      backgroundColor: Colors.amber,
-                    ));
-                    Navigator.pop(context);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Succes add Data'),
+                        backgroundColor: Colors.amber,
+                      ),
+                    );
+                    Navigator.pop(context, 'refresh');
                   }
                 },
                 child: Text("Save"),
