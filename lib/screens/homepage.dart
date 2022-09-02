@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:toko_online/datas/repository/product_repository.dart';
 import 'package:toko_online/screens/add_product.dart';
+import 'package:toko_online/screens/edit_product_page.dart';
 import 'package:toko_online/screens/product_detail.dart';
 
 class HomePage extends StatefulWidget {
@@ -15,6 +16,14 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   Repository repository = Repository();
   bool _isLoading = true;
+
+  // Function untuk refresh layar jika ada perubahan data
+  bool _value = false;
+  void changeData() {
+    setState(() {
+      _value = true;
+    });
+  }
 
   @override
   void initState() {
@@ -30,9 +39,17 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (_) => AddProduct()));
+        // function refresh digunakan di navigator yang ingin di refresh setelah ubah data
+
+        onPressed: () async {
+          String res = await Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => AddProduct()),
+          );
+          // akan mengambil value pop(result) di layer berikutnya kesini
+          if (res == 'refresh') {
+            changeData();
+          }
         },
         child: Icon(Icons.add),
         splashColor: Colors.amber,
@@ -56,7 +73,8 @@ class _HomePageState extends State<HomePage> {
           } else {
             if (snapshot.hasData) {
               return ListView.builder(
-                itemCount: snapshot.data.length,
+                itemCount:
+                    snapshot.data.length == null ? null : snapshot.data.length,
                 itemBuilder: (BuildContext context, int index) {
                   return Card(
                     elevation: 5,
@@ -72,12 +90,14 @@ class _HomePageState extends State<HomePage> {
                             width: 150,
                             child: GestureDetector(
                               onTap: () {
-                                Navigator.push(context,
-                                    MaterialPageRoute(builder: (_) {
-                                  return ProductDetail(
-                                    product: snapshot.data[index],
-                                  );
-                                }));
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (_) {
+                                    return ProductDetail(
+                                      product: snapshot.data[index],
+                                    );
+                                  }),
+                                );
                               },
                               child: Hero(
                                 tag: snapshot.data[index]['imageUrl'],
@@ -109,9 +129,22 @@ class _HomePageState extends State<HomePage> {
                                     Container(
                                       height: 30,
                                       child: IconButton(
-                                        onPressed: () {},
+                                        // method ini akan auto refresh layar
+                                        onPressed: () async {
+                                          String refresh = await Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (_) => EditProduct(
+                                                product: snapshot.data[index],
+                                              ),
+                                            ),
+                                          );
+                                          if (refresh == 'refresh') {
+                                            changeData();
+                                          }
+                                        },
                                         icon: Icon(Icons.edit),
-                                        splashRadius: 20,
+                                        splashRadius: 1,
                                         splashColor: Colors.red,
                                         tooltip: "Edit",
                                         alignment: Alignment.center,
