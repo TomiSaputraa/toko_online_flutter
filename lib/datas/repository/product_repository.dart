@@ -5,8 +5,7 @@ import 'package:http/http.dart';
 import 'package:toko_online/datas/model/product.dart';
 
 class Repository {
-  static final String apiUrl =
-      'http://10.0.2.2:8000/api/products'; //Url Endpoint API
+  static final String apiUrl = 'http://10.0.2.2:8000/api/products';
 
   // Method untuk membaca data Product
   Future getProduct() async {
@@ -48,6 +47,32 @@ class Repository {
       return Product.fromJson(json.decode(response.body));
     } else {
       throw Exception("Failed to post data");
+    }
+  }
+
+  Future<Product?> putProduct(
+    Product? product,
+    String apiId,
+  ) async {
+    Map data = <String, String>{
+      'name': product!.name,
+      'description': product.description,
+      'price': product.price,
+      'imageUrl': product.imageUrl,
+    };
+
+    var response = await http.put(
+      Uri.parse('$apiUrl/$apiId'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Charset': 'utf-8',
+      },
+      body: json.encode(data),
+    );
+    if (response.statusCode == 200) {
+      return Product.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Failed update data');
     }
   }
 }
