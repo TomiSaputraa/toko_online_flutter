@@ -42,7 +42,9 @@ class _HomePageState extends State<HomePage> {
         // function refresh digunakan di navigator yang ingin di refresh setelah ubah data
 
         onPressed: () async {
-          String res = await Navigator.push(
+          // berikan tipe data nullable agar tidak error
+          // karena pop(result) bertipe data null
+          String? res = await Navigator.push(
             context,
             MaterialPageRoute(builder: (_) => AddProduct()),
           );
@@ -131,7 +133,9 @@ class _HomePageState extends State<HomePage> {
                                       child: IconButton(
                                         // method ini akan auto refresh layar
                                         onPressed: () async {
-                                          String refresh = await Navigator.push(
+                                          // tambahkan tipe data null agar tidak error saat menekan tombol back
+                                          String? refresh =
+                                              await Navigator.push(
                                             context,
                                             MaterialPageRoute(
                                               builder: (_) => EditProduct(
@@ -164,7 +168,10 @@ class _HomePageState extends State<HomePage> {
               );
             }
           }
-          return Center(child: CircularProgressIndicator());
+          return Center(
+              child: CircularProgressIndicator(
+            color: Colors.amber,
+          ));
         },
       ),
     );
