@@ -119,7 +119,12 @@ class _HomePageState extends State<HomePage> {
                                       fontSize: 18),
                                 ),
                                 SizedBox(height: 20),
-                                Text(snapshot.data[index]['description']),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10),
+                                  child:
+                                      Text(snapshot.data[index]['description']),
+                                ),
                                 SizedBox(
                                   height: 10,
                                 ),
